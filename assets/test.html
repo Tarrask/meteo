@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href='http://fonts.googleapis.com/css?family=Titillium+Web:300,600,300italic|Cherry+Cream+Soda' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="bower/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="bower/bootstrap/dist/css/bootstrap-theme.min.css">
+<style>
+	body {
+		background: rgba(0, 0, 0, 0) url("images/background-jour-min.svg") no-repeat fixed center top / cover;
+		font-family: 'Titillium Web', sans-serif;
+	}
+	h1, h2, h3, h4, h5, h6 {
+		font-family: 'Cherry Cream Soda', cursive;
+	}
+	.dataBox {
+    background: rgba(255, 255, 255, 0.9) none repeat scroll 0 0;
+    border: 1px solid rgba(230, 230, 230, 0.8);
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin: 15px 0;
+    padding: 10px;
+    text-align: center;
+	}
+	.dataBox h3 {
+		margin-top: 0;
+		font-size: 2.5em;
+	}
+	.dataBox .value {
+		font-size: 3em;
+		font-weight: bold;
+	}
+	.dataBox .value .unit {
+		font-weight: normal;
+	}
+	.graphContainer {
+		position: relative;
+		left: 0; right: 0; top: 0;
+		height: 300px;
+	}
+	.graph {
+		position: absolute;
+		left: 10px; right: 10px; top: 10px; bottom: 10px;
+	}
+</style>
+<script type="text/javascript" src="bower/dygraphs/dygraph-combined-dev.js"></script>
+</head>
+<body>
+	<div class="container" style="max-width: 800px">
+		<div class="row">
+			<div class="col-xs-12"><h2>Extérieur</h2></div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<div class="dataBox">
+					<h3>Température</h3>
+					<p class="value">25,3 <span class="unit" style="letter-spacing: -0.15em">°C</span></p>
+				</div>
+			</div>
+			<div class="col-xs-6 col-sm-6">
+				<div class="dataBox">
+					<h3>Pression</h3>
+					<p class="value">1024 <span class="unit">hPa</span></p>
+				</div>
+			</div>
+			<div class="col-xs-6 col-sm-6">
+				<div class="dataBox">
+					<h3>Humidité</h3>
+					<p class="value">NaN <span class="unit">%</span></p>
+				</div>
+			</div>
+			<div class="col-xs-6 col-sm-6">
+				<div class="dataBox">
+					<h3>Tension</h3>
+					<p class="value">3.31 <span class="unit">V</span></p>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-md-12">
+				<div class="dataBox graphContainer">
+					<div class="graph" id="graphTemperature"></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-md-12">
+				<div class="dataBox graphContainer">
+					<div class="graph" id="graphPression"></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-md-12">
+				<div class="dataBox graphContainer">
+					<div class="graph" id="graphTension"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		var gtemp = new Dygraph(document.getElementById("graphTemperature"), "raw/temperature.csv", 
+							{});
+		var gtemp = new Dygraph(document.getElementById("graphPression"), "raw/pression.csv", 
+							{});
+		var gtens = new Dygraph(document.getElementById("graphTension"), "raw/tension.csv", 
+							{});
+	</script>
+</body>
+</html>

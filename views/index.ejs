@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href='http://fonts.googleapis.com/css?family=Titillium+Web:300,600,300italic|Cherry+Cream+Soda' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="bower/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="bower/bootstrap/dist/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="styles/layout.css">
+</head>
+<body>
+	<div class="container" style="max-width: 970px">
+		<div class="row">
+			<div class="col-xs-12"><h1>Extérieur</h1></div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<div class="dataBox">
+					<h2>Température</h2>
+					<p class="value">
+						<span id="temperatureBox"><%=temperature1.toFixed(1) %></span> 
+						<span class="unit" style="letter-spacing: -0.15em">°C</span>
+					</p>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<div class="dataBox">
+					<h2>Pression</h2>
+					<p class="value">
+						<span id="pressionBox"><%=pression.toFixed(1) %></span>
+						<span class="unit">hPa</span>
+					</p>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<div class="dataBox">
+					<h2>Humidité</h2>
+					<p class="value">
+						<span id="humiditeBox">NaN</span>
+						<span class="unit">%</span>
+					</p>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<div class="dataBox">
+					<h2>Tension</h2>
+					<p class="value">
+						<span id="tensionBox"><%=tension.toFixed(2) %></span>
+						<span class="unit">Volt</span>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-md-12">
+				<div class="dataBox">
+					<h2>Température</h2>
+					<div class="graphContainer">
+						<div class="graph" id="graphTemperature"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-md-12">
+				<div class="dataBox">
+					<h2>Pression</h2>
+					<div class="graphContainer">
+						<div class="graph" id="graphPression"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-md-12">
+				<div class="dataBox">
+					<h2>Tension</h2>
+					<div class="graphContainer">
+						<div class="graph" id="graphTension"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer>
+		<p>Dernière mise-à-jour: <span id="updateTime"><%=moment(timestamp*1000).format("LL LTS") %></span></p>
+	</footer>
+	
+	<script type="text/javascript" src="bower/dygraphs/dygraph-combined-dev.js"></script>
+	<script type="text/javascript" src="bower/dojo/dojo.js"></script>
+	<script>
+		require(["bower/socket.io-client/socket.io.js", "moment/moment", "moment/locale/fr", "dojo/_base/lang", "dojo/domReady!"], 
+		function(io, moment, momentFr, lang) {
+			moment.locale('fr');
+			var opts = { axes: { x: {
+						ticker: Dygraph.dateTicker,
+						axisLabelFormatter: Dygraph.dateAxisLabelFormatter,
+						valueFormatter: function(date) {
+							var m = moment(date);
+							return m.format("LL") + " &ndash; <b>" + m.format("LT") + "</b>";
+						}
+				}	},
+				xValueParser: function(str) {
+					return parseInt(str)*1000;
+				},
+				labelsDivStyles: {
+					'backgroundColor': 'transparent',
+					'margin-top': '-20px'
+				},
+				drawGapEdgePoints: false,
+				fillGraph: true,
+				strokeWidth: 1.5,
+				gridLineColor: "rgba(0,0,0,0.5)"
+			}
+								
+			Dygraph.SHORT_MONTH_NAMES_ = ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Dec'];
+			var gtemp = new Dygraph(document.getElementById("graphTemperature"), "raw/temperature.csv", lang.mixin({
+				
+			}, opts));
+			var gpres = new Dygraph(document.getElementById("graphPression"), "raw/pression.csv", lang.mixin({
+				rollPeriod: 15, 
+				showRoller: true
+			}, opts));
+			var gtens = new Dygraph(document.getElementById("graphTension"), "raw/tension.csv", lang.mixin({
+				
+			}, opts));
+								
+			var socket = io();
+			socket.on('dataUpdated', function(data) {
+				console.log("new data available", data);
+				document.getElementById("temperatureBox").innerHTML = data.temperature2.toFixed(1);
+				document.getElementById("pressionBox").innerHTML = data.pression.toFixed(1);
+				document.getElementById("tensionBox").innerHTML = data.tension.toFixed(2);
+				document.getElementById("updateTime").innerHTML = moment(data.timestamp*1000).format("LL LTS");
+				
+				gtemp.rawData_.push([data.timestamp*1000, data.temperature2]);
+				gtemp.updateOptions({file: gtemp.rawData_});
+				gpres.rawData_.push([data.timestamp*1000, data.pression]);
+				gpres.updateOptions({file: gpres.rawData_});
+				gtens.rawData_.push([data.timestamp*1000, data.tension]);
+				gtens.updateOptions({file: gtens.rawData_});
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+    "title"		 : "Un extrait de licence <small>pour test</small>",
+    "date"		 : "2015-06-09T18:45:00.000Z",
+		"category" : "test",
+		"author"	 : "Tarh",
+    "tags"		 : [ "plaintext", "test" ]
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%=blog.title %></title>
+
+<link href='http://fonts.googleapis.com/css?family=Titillium+Web:300,600,300italic|Cherry+Cream+Soda' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="../bower/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="../bower/bootstrap/dist/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="../styles/layout.css">
+<style>
+	summary {
+		display: none;
+	}
+</style>
+</head>
+<body>
+<h1><%=blog.title %></h1>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+		<section class="blog">
+			<header>
+				<h2><%- blog.thisPost.meta.title %></h2>
+				<details><%= blog.thisPost.meta.author %> &mdash; <%- moment(blog.thisPost.meta.date).fromNow() %></details>
+			</header>
+			<article>
+				<%- blog.thisPost.html %>
+			</article>
+			<div id="disqus_thread"></div>
+		</section>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "tarnet";
+    var disqus_identifier = "<%= blog.thisPost.name %>";
+    var disqus_title = "<%= blog.thisPost.meta.title %>";
+    var disqus_url = "http://meteo.tarnet.ch/blog/<%= blog.thisPost.name %>";
+    var disqus_category_id = "3771061";
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by 
+Disqus.</a></noscript>
+
+</body>
+</html>

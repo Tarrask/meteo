@@ -1,0 +1,68 @@
+body {
+	background: rgb(0, 0, 0) url("../images/background-jour-min.svg") no-repeat fixed center 40% / cover;
+	font-family: 'Titillium Web', sans-serif;
+}
+h1 {
+	text-shadow: 0 0 10px white;
+}
+.dataBox {
+  background: rgba(255, 255, 255, 0.9) none repeat scroll 0 0;
+  border: 1px solid rgba(230, 230, 230, 0.8);
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  margin: 15px 0;
+  padding: 10px;
+  text-align: center;
+}
+.dataBox .value {
+	font-size: 3em;
+	font-weight: bold;
+}
+.dataBox .value .unit {
+	font-weight: normal;
+}
+.graphContainer {
+	position: relative;
+	left: 0; right: 0; top: 0;
+	height: 240px;
+}
+.graph {
+	position: absolute;
+	left: 10px; right: 10px; top: 10px; bottom: 10px;
+}
+.dygraph-title {
+	font-size: 35px;
+	height: 60px;
+	line-height: 60px;
+}
+.dygraph-legend {
+	background: none;
+	top: -20px;
+}
+footer {
+	color: #ddd;
+  font-size: 0.9em;
+  text-align: center;;
+}
+.blog {
+  background: rgba(255, 255, 255, 0.9) none repeat scroll 0 0;
+  border: 1px solid rgba(230, 230, 230, 0.8);
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  margin: 15px 0;
+  padding: 24px;
+}
+.blog h2:first-child {
+	margin-top: 0;
+}
+.blog header {
+	border-bottom: 1px solid #ccc;
+}
+.blog header h2 {
+	margin: 0;
+}
+.blog header details {
+	color: #888;
+	font-size: 0.8em;
+	line-height: 2.5;
+}
